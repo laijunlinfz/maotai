@@ -13,21 +13,26 @@ const Content: FC = () => {
   const logRef = useRef<HTMLDivElement>(null);
   // const [log, setLog] = useState<string>("");
   // const msg = utils.isJD() ? Welcome.JD : Welcome.TM;
-  const timeToStart = utils.timeToStart();
-  const timeToStartStr = utils.formatSecond(timeToStart);
-  console.log("timeToStartStr --- ", timeToStartStr);
   const isJD = utils.isJD();
   const isTM = utils.isTM();
 
   const setLog = (str: string): void => {
     // let insertScript = document.createElement("p");
     // insertScript.nodeValue
-    logRef.current?.append(str);
+    
+		var pNode = document.createElement("p"); //创建标签
+		var textNode = document.createTextNode(str); //创建文本
+		pNode?.appendChild(textNode); //标签与文本关联起来
+    logRef.current?.append(pNode);
   };
 
   const task = useCallback(() => {
-    setLog(`<br>距开始抢购剩: ${timeToStartStr}`);
-  }, [timeToStartStr]);
+    const timeToStart = utils.timeToStart();
+    const timeToStartStr = utils.formatSecond(timeToStart);
+    console.log("timeToStartStr --- ", timeToStartStr);
+    setLog(`距开始抢购剩: ${timeToStartStr}`);
+    logRef.current?.scrollTo(0, logRef.current.offsetHeight);
+  }, []);
 
   useEffect(() => {
     curSetInterval = setInterval(task, 5000);

@@ -13,7 +13,7 @@ export const isJD = (): boolean => {
 };
 
 export const isTM = (): boolean => {
-  if (window.location.href.includes("tmaill")) {
+  if (window.location.href.includes("tmall")) {
     return true;
   }
   return false;
@@ -38,9 +38,14 @@ export const timeToStart = () => {
   const date = new Date();
   const year = date.getFullYear();
   const month = date.getMonth() + 1;
-  const day = date.getDay();
+  const day = date.getDate();
   const fullStartTime = `${year}/${month}/${day} ${startTime}:00`;
-  return Math.floor((date.getTime() - new Date(fullStartTime).getTime()) / 1000);
+  const timestamp = Date.now();
+  let fullStartTimeTs = new Date(fullStartTime).getTime();
+  if (timestamp - fullStartTimeTs > 5 * 60 * 1000) {
+    fullStartTimeTs = fullStartTimeTs + 24 * 60 * 60 * 1000;
+  }
+  return Math.floor((fullStartTimeTs - timestamp) / 1000);
 };
 
 // 格式化时间显示
